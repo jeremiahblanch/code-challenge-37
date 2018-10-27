@@ -18,13 +18,16 @@ var api = {};
     - You may not use any external libraries
 
 */
-api.fanOut = (input, fn) => {
-  /**
-   * Your implementation goes here
-   */
-  return [];
-};
 
+api.fanOut = (input, fn) => {
+  const output = [];
+
+  for (let el of input) {
+    output.push(fn(el));
+  }
+
+  return output;
+}
 /**
  PART 2: Implement funnel.
 
@@ -47,11 +50,14 @@ api.fanOut = (input, fn) => {
 
  */
 api.funnel = (input, fn, startValue) => {
-  /**
-   * Your implementation goes here
-   */
-  return 0;
-};
+  let output = startValue;
+
+  for (let el of input) {
+    output = fn(output, el);
+  }
+
+  return output;
+}
 
 /**
  PART 3: Implement distill.
@@ -73,11 +79,16 @@ api.funnel = (input, fn, startValue) => {
 
  */
 api.distill = (input, fn) => {
-  /**
-   * Your implementation goes here
-   */
-  return [];
-};
+  const output = [];
+
+  for (let el of input) {
+    if (fn(el)) {
+        output.push(el);
+      }
+  }
+
+  return output;
+}
 
 /**
  PART 4: Implement numberOfChars.
@@ -95,10 +106,7 @@ api.distill = (input, fn) => {
 
  */
 api.numberOfChars = (input) => {
-  /**
-   * Your implementation goes here
-   */
-  return 0;
+  return api.funnel(input, (total, item) => total + item.length, 0);
 };
 
 /**
@@ -119,10 +127,7 @@ api.numberOfChars = (input) => {
 
  */
 api.numberOfCertainChars = (input, c) => {
-  /**
-   * Your implementation goes here
-   */
-  return 0;
-};
+  return api.funnel(input, (total, item) => api.distill(item, char => char === c).length + total, 0);
+}
 
 module.exports = api;
